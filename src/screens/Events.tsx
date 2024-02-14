@@ -1,7 +1,7 @@
 import { View, FlatList, Dimensions, Image, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Card, Text, Searchbar, RadioButton, Button, IconButton } from 'react-native-paper'
-import { eventList } from '../data/events'
+import { defaultImg, eventList } from '../data/events'
 import { Drawer } from 'react-native-drawer-layout';
 import DatePicker from 'react-native-date-picker'
 import Carousel from 'react-native-reanimated-carousel';
@@ -13,13 +13,8 @@ const eventTypes = [...new Set(eventList.map(i => i.type))];
 const Events = ({navigation}: any) => {
   const width = Dimensions.get('window').width;
   dayjs.locale('tr');
-
-  useEffect(() => {
-    let filteredEvents = eventList.filter(item => dayjs(item.date, "DD-MM-YYYY").isAfter(dayjs(new Date(), "DD-MM-YYYY")))
-    setEvents(filteredEvents)
-  }, [])
   
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState(eventList);
   const [value, setValue] = useState("");
   const [value2, setValue2] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -140,8 +135,8 @@ const Events = ({navigation}: any) => {
       
       <FlatList
         ListHeaderComponent={
-          <>
-          <Button>See past events</Button>
+        <>
+        <Button onPress={() => navigation.navigate("PastEvents")}>See past events</Button>
         <View style={{backgroundColor: "white", padding: "2%", borderRadius: 10, height: 250, marginVertical: 10}}>
         <Text style={{fontSize: 20, fontWeight: "bold"}}>Popular Events</Text>
         <Carousel
@@ -159,15 +154,15 @@ const Events = ({navigation}: any) => {
           <Image    
             style={{height: 150, width: "90%", borderRadius: 5, marginTop: 10}}
             source={{
-            uri: events[index].images[0],
+            uri: events[index].images.length == 0 ? defaultImg : events[index].images[0],
             }}
           />   
           <Text style={{ fontSize: 18,  marginTop: 10 }}>{events[index].name}</Text>
           </Pressable>       
         )}
-      />
-      </View>
-      </>}
+        />
+        </View>
+        </>}
         showsVerticalScrollIndicator={false}
         data={events}
         renderItem={({item}) =>
@@ -175,7 +170,7 @@ const Events = ({navigation}: any) => {
           <Card onPress={() => navigation.navigate("Event", {event: item})}
           key={item.id}
           style={{marginTop: 10, marginBottom: 5, backgroundColor: "white"}}>
-            <Card.Cover style={{margin: 10}}source={{ uri: item.images.length == 0 ? 'https://img.freepik.com/premium-photo/people-concert_31965-3617.jpg' : item.images[0]}}/>
+            <Card.Cover style={{margin: 10}}source={{ uri: item.images.length == 0 ? defaultImg : item.images[0]}}/>
             <Card.Title
             title={item.name}
             titleStyle={{fontSize: 20}}

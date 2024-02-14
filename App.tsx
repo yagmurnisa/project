@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Event from './src/screens/Event'
 import Events from './src/screens/Events'
 import EventsByLocation from './src/screens/EventsByLocation'
+import PastEvents from './src/screens/PastEvents'
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -27,6 +28,11 @@ const App = () => {
                 name='EventsByLocation'
                 options={{headerTitle: "Events"}}
                 component={EventsByLocation}
+                />
+                <Stack.Screen
+                name='PastEvents'
+                options={{headerTitle: "Past Events"}}
+                component={PastEvents}
                 />
             </Stack.Navigator>
         </NavigationContainer>

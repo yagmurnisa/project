@@ -1,7 +1,7 @@
 import { View, FlatList } from 'react-native'
 import React from 'react'
 import { Card, Text } from 'react-native-paper'
-import { eventList } from '../data/events'
+import { defaultImg, eventList } from '../data/events'
 import dayjs from 'dayjs'
 
 const EventsByLocation = ({route, navigation}: any) => {
@@ -15,10 +15,10 @@ const EventsByLocation = ({route, navigation}: any) => {
           renderItem={({item}) => {if (item.location == location) {
             return (
           <>
-            <Card onPress={() => navigation.push("Event", {event: item})}
+            <Card onPress={() => navigation.navigate("Event", {event: item})}
             key={item.id}
             style={{ marginBottom: 10, backgroundColor: "white"}}>
-            <Card.Cover style={{margin: 10}} source={{ uri: item.images[0]}}/>
+            <Card.Cover style={{margin: 10}} source={{ uri: item.images.length == 0 ? defaultImg : item.images[0]}}/>
             <Card.Title
             title={item.name}
             titleStyle={{fontSize: 20}}

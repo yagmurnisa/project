@@ -3,6 +3,7 @@ import React from 'react'
 import { IconButton, Text, Button } from 'react-native-paper'
 import Carousel from 'react-native-reanimated-carousel';
 import dayjs from 'dayjs';
+import { defaultImg } from '../data/events';
 
 const Event = ({route, navigation}: any) => {
   const width = Dimensions.get('window').width;
@@ -34,8 +35,16 @@ const Event = ({route, navigation}: any) => {
   <View style={{backgroundColor: "white", paddingVertical: "2%"}}>
     <View style={{paddingHorizontal: "3%"}}>
       <Text style={{fontSize:20}}>{event.name}</Text>
-      <Text style={{fontSize:16}} onPress={()=> navigation.navigate("EventsByLocation", {location: event.location})}>{`${event.location}, ${dayjs(event.date).format("DD-MM-YYYY")}`}</Text>
-    </View>  
+      <Text style={{fontSize:16}} onPress={()=> navigation.push("EventsByLocation", {location: event.location})}>{`${event.location}, ${dayjs(event.date).format("DD-MM-YYYY")}`}</Text>
+    </View>    
+      {event.images.length <= 0 ? (
+        <Image
+        style={{height: 300, width: "90%", borderRadius: 5, marginTop: 10}}
+        source={{
+        uri: defaultImg,
+        }}
+      /> 
+      ) : (
       <Carousel
         mode="parallax"
         loop={false}
@@ -54,7 +63,7 @@ const Event = ({route, navigation}: any) => {
             }}
           />          
         )}
-      />
+      /> )}
       <View style={{paddingHorizontal: "3%"}}>
         <Text style={{marginVertical: 10, fontSize:16}}>{event.description}</Text>
         {event.tickets == 0 ? <Text style={{ fontSize:16}}>Ücretsiz</Text> : 
